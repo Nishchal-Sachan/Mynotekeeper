@@ -1,5 +1,5 @@
 import React from 'react';
-import NoteCard from './NoteCard';
+import NoteCard from './NoteCard.js';
 
 const NoteGrid = ({ notes, setEditorNote }) => {
     if (!notes || notes.length === 0) {

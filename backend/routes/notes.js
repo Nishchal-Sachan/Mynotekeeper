@@ -1,17 +1,24 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Note = require('../models/Note');
 const router = express.Router();
 
 // Add a new note
 router.post('/', async (req, res) => {
+    // Explicitly remove _id from the request body
+    if (req.body._id) {
+        delete req.body._id;
+    }
     try {
-        const note = new Note(req.body);
-        const savedNote = await note.save();
+        const newNote = new Note(req.body); // Create a new note without _id
+        const savedNote = await newNote.save();
         res.status(201).json(savedNote);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to add note', error });
+        console.error('Error creating note:', error); // Log the error
+        res.status(500).json({ message: 'Failed to create note', error });
     }
 });
+
 
 // Get paginated notes
 router.get('/', async (req, res) => {
@@ -32,15 +39,22 @@ router.get('/', async (req, res) => {
 
 // Update a note
 router.put('/:id', async (req, res) => {
-    console.log('Received update request:', req.params.id, req.body); // Debug log
+    const noteId = req.params.id;
+
+    // Validate MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(noteId)) {
+        return res.status(400).json({ message: 'Invalid note ID' });
+    }
+
     try {
-        const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        // Update the note
+        const updatedNote = await Note.findByIdAndUpdate(noteId, req.body, { new: true });
         if (!updatedNote) {
             return res.status(404).json({ message: 'Note not found' });
         }
         res.status(200).json(updatedNote);
     } catch (error) {
-        console.error('Error updating note:', error); // Debug log
+        console.error('Error updating note:', error); // Log the error
         res.status(500).json({ message: 'Failed to update note', error });
     }
 });

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NoteGrid from './components/NoteGrid';
-import NoteEditor from './components/NoteEditor';
-import Pagination from './components/Pagination';
+import NoteGrid from './components/NoteGrid.js';
+import NoteEditor from './components/NoteEditor.js';
+import Pagination from './components/Pagination.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     const [notes, setNotes] = useState([]);
     const [page, setPage] = useState(1);
-    const [editorNote, setEditorNote] = useState(null);
+    const [editorNote, setEditorNote] = useState(null); // Manages both editing and creating
     const [totalNotes, setTotalNotes] = useState(0);
 
     const NOTES_PER_PAGE = 6;
@@ -33,32 +33,43 @@ const App = () => {
     }, [page]);
 
     // Handle saving a note
-    const handleSaveNote = async (updatedNote) => {
+    const handleSaveNote = async (note) => {
         try {
-            if (updatedNote.id) {
-                // Update an existing note
-                await axios.put(`http://localhost:5000/notes/${updatedNote.id}`, updatedNote);
+            if (note.id) {
+                // Update existing note
+                const { id, ...noteData } = note; // Exclude id for PUT request
+                await axios.put(`http://localhost:5000/notes/${id}`, noteData);
                 toast.success('Note updated successfully!');
             } else {
-                // Create a new note
-                await axios.post('http://localhost:5000/notes', updatedNote);
+                // Create new note
+                const { id, _id, ...noteData } = note; // Ensure _id and id are excluded
+                await axios.post('http://localhost:5000/notes', noteData);
                 toast.success('Note created successfully!');
             }
-            fetchNotes(page); // Refresh the notes
+            fetchNotes(page); // Refresh notes
             setEditorNote(null); // Close the editor
         } catch (error) {
-            console.error('Error saving note:', error); // Log for debugging
             toast.error('Failed to save the note. Please try again.');
         }
     };
 
 
+
     return (
-        <div style={styles.container}>
-            <h1 style={styles.title}>Notekeeper</h1>
+        <div>
+            <h1>Notekeeper</h1>
+
+            {/* Create New Note Button */}
+            <div>
+                <button onClick={() => setEditorNote({})}>
+                    Create New Note
+                </button>
+            </div>
+
+            {/* Notes Grid */}
             <NoteGrid notes={notes} setEditorNote={setEditorNote} />
 
-            {/* Render the NoteEditor when a note is being edited */}
+            {/* Note Editor */}
             {editorNote && (
                 <NoteEditor
                     note={editorNote}
@@ -67,7 +78,7 @@ const App = () => {
                 />
             )}
 
-            {/* Render Pagination only if the editor is not open */}
+            {/* Pagination */}
             {!editorNote && (
                 <Pagination
                     currentPage={page}
@@ -80,19 +91,4 @@ const App = () => {
         </div>
     );
 };
-
-const styles = {
-    container: {
-        maxWidth: '800px',
-        margin: '0 auto',
-        padding: '16px',
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: '2rem',
-        marginBottom: '16px',
-        color: '#333',
-    },
-};
-
 export default App;
