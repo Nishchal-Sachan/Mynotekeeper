@@ -1,7 +1,7 @@
 import React from 'react';
-import NoteCard from './NoteCard.js';
+import NoteCard from './NoteCard';
 
-const NoteGrid = ({ notes, setEditorNote }) => {
+const NoteGrid = ({ notes, setEditorNote, onDelete }) => {
     if (!notes || notes.length === 0) {
         return <div style={{ textAlign: 'center', marginTop: '20px' }}>No notes available</div>;
     }
@@ -9,8 +9,13 @@ const NoteGrid = ({ notes, setEditorNote }) => {
     return (
         <div style={styles.gridContainer}>
             {notes.map((note) => (
-                <NoteCard key={note.id} note={note} onClick={() => setEditorNote(note)} />
-            ))}
+    <NoteCard
+        key={note.id || note._id} // Support both id and _id
+        note={{ ...note, id: note.id || note._id }} // Normalize id
+        onClick={() => setEditorNote(note)}
+        onDelete={onDelete}
+    />
+))}
         </div>
     );
 };
@@ -18,7 +23,7 @@ const NoteGrid = ({ notes, setEditorNote }) => {
 const styles = {
     gridContainer: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '16px',
     },
 };

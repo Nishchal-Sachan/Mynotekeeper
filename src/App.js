@@ -53,21 +53,30 @@ const App = () => {
         }
     };
 
-
+    const handleDeleteNote = async (noteId) => {
+        try {
+            await axios.delete(`http://localhost:5000/notes/${noteId}`);
+            toast.success('Note deleted successfully!');
+            fetchNotes(page); // Refresh the notes
+        } catch (error) {
+            console.error('Error deleting note:', error); // Debugging
+            toast.error('Failed to delete the note. Please try again.');
+        }
+    };
 
     return (
-        <div>
-            <h1>Notekeeper</h1>
+        <div style={styles.appContainer}>
+            <h1 style={styles.header}>Notekeeper</h1>
 
             {/* Create New Note Button */}
-            <div>
-                <button onClick={() => setEditorNote({})}>
+            <div style={styles.buttonContainer}>
+                <button style={styles.createButton} onClick={() => setEditorNote({})}>
                     Create New Note
                 </button>
             </div>
 
             {/* Notes Grid */}
-            <NoteGrid notes={notes} setEditorNote={setEditorNote} />
+            <NoteGrid notes={notes} setEditorNote={setEditorNote} onDelete={handleDeleteNote} />
 
             {/* Note Editor */}
             {editorNote && (
@@ -91,4 +100,40 @@ const App = () => {
         </div>
     );
 };
+
+const styles = {
+    appContainer: {
+        maxWidth: '800px',
+        margin: '0 auto',
+        padding: '16px',
+        fontFamily: '"Arial", sans-serif',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    },
+    header: {
+        textAlign: 'center',
+        fontSize: '2rem',
+        marginBottom: '16px',
+        color: '#333',
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '16px',
+    },
+    createButton: {
+        backgroundColor: '#007BFF',
+        color: '#fff',
+        border: 'none',
+        padding: '10px 20px',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '1rem',
+    },
+    createButtonHover: {
+        backgroundColor: '#0056b3',
+    },
+};
+
 export default App;

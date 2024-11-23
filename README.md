@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+Notekeeper Application
+A full-stack Notekeeper Application built with React, Node.js, and MongoDB that allows users to manage their notes effectively. The application supports creating, updating, deleting, and viewing notes in a paginated grid layout.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Features
+Create Notes: Add a new note with a title, tagline, body, and pin option.
+Update Notes: Edit existing notes directly in a popup form.
+Delete Notes: Remove notes from the list with a single click.
+Pin Notes: Pinned notes always appear at the top.
+Pagination: Displays up to 6 notes per page.
+Responsive Design: Optimized for desktop and mobile screens.
+Error Handling: User-friendly toast notifications for errors.
+Tech Stack
+Frontend: React
+Backend: Node.js, Express.js
+Database: MongoDB
+Styling: Inline CSS
+Other Tools: Axios, Toastify
+Getting Started
+Prerequisites
+Ensure you have the following installed on your system:
 
-## Available Scripts
+Node.js (v16 or higher)
+MongoDB (local or Atlas)
+Setup Instructions
+1. Clone the Repository
+git clone https://github.com/your-username/notekeeper.git
+cd notekeeper
+2. Install Dependencies
+For the Backend:
 
-In the project directory, you can run:
+cd backend
+npm install
+For the Frontend:
 
-### `npm start`
+cd frontend
+npm install
+3. Configure the Environment
+Backend:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Create a .env file in the backend directory with the following:
+MONGO_URI=mongodb://localhost:27017/myNotekeeperDB
+PORT=5000
+Frontend:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ensure the axios base URL in the frontend matches your backend URL.
+4. Start the Application
+Backend:
 
-### `npm test`
+cd backend
+node server.js
+Frontend:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+cd frontend
+npm start
+API Endpoints
+Base URL: http://localhost:5000
+1. GET /notes
+Fetch paginated notes.
 
-### `npm run build`
+Query Parameters:
+page (default: 1): The current page number.
+limit (default: 6): Number of notes per page.
+2. POST /notes
+Create a new note.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Request Body:
+{
+  "title": "Sample Title",
+  "tagline": "Sample Tagline",
+  "body": "Note content here.",
+  "isPinned": false
+}
+3. PUT /notes/:id
+Update an existing note.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Path Parameter:
+id: The note's unique MongoDB ID.
+Request Body:
+{
+  "title": "Updated Title",
+  "tagline": "Updated Tagline",
+  "body": "Updated content.",
+  "isPinned": true
+}
+4. DELETE /notes/:id
+Delete a note by ID.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Path Parameter:
+id: The note's unique MongoDB ID.
+Project Structure
+notekeeper/
+├── backend/
+│   ├── models/
+│   │   └── Note.js       # Mongoose schema for notes
+│   ├── routes/
+│   │   └── notes.js      # Routes for note operations
+│   ├── server.js         # Backend entry point
+│   └── package.json      # Backend dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── NoteCard.js       # Note card component
+│   │   │   ├── NoteEditor.js     # Popup for creating/updating notes
+│   │   │   └── NoteGrid.js       # Grid layout for displaying notes
+│   │   ├── App.js                # Main app component
+│   │   └── index.js              # Frontend entry point
+│   ├── package.json              # Frontend dependencies
+│   └── public/                   # Static files
+└── README.md
+Usage
+Add a New Note:
 
-### `npm run eject`
+Click "Create New Note."
+Fill in the title, tagline, body, and optionally pin the note.
+Edit a Note:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Click on an existing note in the grid.
+Modify the details in the popup and click "Save."
+Delete a Note:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Click the "Delete" button on a note card.
+Pagination:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Navigate between pages using the pagination buttons.
+Known Issues
+Ensure MongoDB is running locally or update the MONGO_URI in .env for Atlas.
+For large datasets, pagination might require optimization.
+Future Improvements
+Add user authentication.
+Support for tagging and searching notes.
+Improved styling using CSS frameworks like Tailwind or Material-UI.
+Contributing
+Contributions are welcome! Please fork the repository and submit a pull request.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
