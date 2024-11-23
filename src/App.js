@@ -103,7 +103,7 @@ const App = () => {
 
 const styles = {
     appContainer: {
-        maxWidth: '800px',
+        maxWidth: '1200px',
         margin: '0 auto',
         padding: '16px',
         fontFamily: '"Arial", sans-serif',
