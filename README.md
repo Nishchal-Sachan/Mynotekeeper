@@ -23,20 +23,21 @@ Node.js (v16 or higher)
 MongoDB (local or Atlas)
 Setup Instructions
 1. Clone the Repository
-git clone https://github.com/your-username/notekeeper.git
+git clone https://github.com/Nishchal-Sachan/Mynotekeeper.git
 cd notekeeper
 2. Install Dependencies
 For the Backend:
-
+<div>
 cd backend
 npm install
 For the Frontend:
-
+</div>
+<div>
 cd frontend
 npm install
+</div>
 3. Configure the Environment
 Backend:
-
 Create a .env file in the backend directory with the following:
 MONGO_URI=mongodb://localhost:27017/myNotekeeperDB
 PORT=5000
@@ -84,7 +85,7 @@ Request Body:
 }
 4. DELETE /notes/:id
 Delete a note by ID.
-
+<section>
 Path Parameter:
 id: The note's unique MongoDB ID.
 Project Structure
@@ -107,6 +108,7 @@ notekeeper/
 │   ├── package.json              # Frontend dependencies
 │   └── public/                   # Static files
 └── README.md
+</section>
 Usage
 Add a New Note:
 

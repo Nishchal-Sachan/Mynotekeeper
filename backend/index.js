@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const notesRoutes = require('./routes/notes');
+require('dotenv').config();
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json());
 app.use('/notes', notesRoutes);
 
 // Connect to MongoDB
-const MONGO_URI = 'mongodb+srv://nishchal:nishchal@cluster0.4uyua.mongodb.net/Mynoteskeeper?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO;
 mongoose
     .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // MongoDB URI
-const MONGO_URI = 'mongodb+srv://nishchal:nishchal@cluster0.4uyua.mongodb.net/Mynoteskeeper?retryWrites=true&w=majority&appName=Cluster0'; // Replace with your MongoDB connection string
+const MONGO_URI = process.env.MONGO; // Replace with your MongoDB connection string
 
 // Connect to MongoDB
 mongoose
